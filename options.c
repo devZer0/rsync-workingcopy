@@ -66,6 +66,7 @@ int preserve_atimes = 0;
 int preserve_crtimes = 0;
 int omit_dir_times = 0;
 int omit_link_times = 0;
+int no_symlink_perms = 0;
 int trust_sender = 0;
 int update_only = 0;
 int open_noatime = 0;
@@ -657,6 +658,7 @@ static struct poptOption long_options[] = {
   {"omit-link-times", 'J', POPT_ARG_VAL,    &omit_link_times, 1, 0, 0 },
   {"no-omit-link-times",0, POPT_ARG_VAL,    &omit_link_times, 0, 0, 0 },
   {"no-J",             0,  POPT_ARG_VAL,    &omit_link_times, 0, 0, 0 },
+  {"no-symlink-perms", 0,  POPT_ARG_VAL,    &no_symlink_perms, 1, 0, 0 },
   {"modify-window",   '@', POPT_ARG_INT,    &modify_window, OPT_MODIFY_WINDOW, 0, 0 },
   {"super",            0,  POPT_ARG_VAL,    &am_root, 2, 0, 0 },
   {"no-super",         0,  POPT_ARG_VAL,    &am_root, 0, 0, 0 },

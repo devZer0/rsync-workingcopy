@@ -36,6 +36,7 @@ int preserve_xattrs = 0;
 int preserve_perms = 0;
 int preserve_executability = 0;
 int omit_link_times = 0;
+int no_symlink_perms = 0;
 int open_noatime = 0;
 size_t max_alloc = (size_t)-1; /* test helpers are not memory-constrained;
 				* 0 here makes every my_alloc()/my_strdup() in

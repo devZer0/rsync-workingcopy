@@ -49,6 +49,7 @@ extern int preserve_gid;
 extern int preserve_acls;
 extern int preserve_xattrs;
 extern int preserve_links;
+extern int no_symlink_perms;
 extern int preserve_hard_links;
 extern int preserve_devices;
 extern int preserve_specials;
@@ -887,6 +888,8 @@ static struct file_struct *recv_file_entry(int f, struct file_list *flist, int x
 
 	if (chmod_modes && !S_ISLNK(mode) && mode)
 		mode = tweak_mode(mode, chmod_modes);
+	if (no_symlink_perms && S_ISLNK(mode))
+		mode = (mode & ~CHMOD_BITS) | 0777;
 
 	if (preserve_uid && !(xflags & XMIT_SAME_UID)) {
 		if (protocol_version < 30)
