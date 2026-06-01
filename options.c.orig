@@ -189,8 +189,6 @@ char *shell_cmd = NULL;
 char *logfile_name = NULL;
 char *logfile_format = NULL;
 char *stdout_format = NULL;
-char *time_format = NULL;
-char *log_time_format = NULL;
 char *password_file = NULL;
 char *early_input_file = NULL;
 char *rsync_path = RSYNC_PATH;
@@ -786,8 +784,6 @@ static struct poptOption long_options[] = {
   {"log-file",         0,  POPT_ARG_STRING, &logfile_name, 0, 0, 0 },
   {"log-file-format",  0,  POPT_ARG_STRING, &logfile_format, 0, 0, 0 },
   {"out-format",       0,  POPT_ARG_STRING, &stdout_format, 0, 0, 0 },
-  {"time-format",      0,  POPT_ARG_STRING, &time_format, 0, 0, 0 },
-  {"log-time-format",  0,  POPT_ARG_STRING, &log_time_format, 0, 0, 0 },
   {"log-format",       0,  POPT_ARG_STRING, &stdout_format, 0, 0, 0 }, /* DEPRECATED */
   {"itemize-changes", 'i', POPT_ARG_NONE,   0, 'i', 0, 0 },
   {"no-itemize-changes",0, POPT_ARG_VAL,    &itemize_changes, 0, 0, 0 },

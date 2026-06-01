@@ -48,6 +48,8 @@ extern char *auth_user;
 extern char *stdout_format;
 extern char *logfile_format;
 extern char *logfile_name;
+extern char *time_format;
+extern char *log_time_format;
 #ifdef ICONV_CONST
 extern iconv_t ic_chck;
 #endif
@@ -586,10 +588,35 @@ static void log_formatted(enum logcode code, const char *format, const char *op,
 			snprintf(buf2, sizeof buf2, fmt, (int)getpid());
 			n = buf2;
 			break;
-		case 'M':
-			n = c = timestring(file->modtime);
-			while ((c = strchr(c, ' ')) != NULL)
-				*c = '-';
+		case 'M': /* file modification time, format controlled by --time-format */
+			if (time_format) {
+				/* "%s" is handled as a special case because it is a GNU
+				 * extension to strftime(3) and not portable to e.g. BSDs.
+				 * We implement it ourselves by printing the raw epoch value. */
+				if (strcmp(time_format, "%s") == 0) {
+					snprintf(buf2, sizeof buf2, "%lld",
+					         (long long)file->modtime);
+					n = buf2;
+				} else {
+					/* Let strftime(3) render the mtime with the
+					 * caller-supplied format string. Fall back to the
+					 * default timestring() if localtime() fails (e.g.
+					 * out-of-range timestamp). */
+					time_t t = (time_t)file->modtime;
+					struct tm *tm_p = localtime(&t);
+					if (tm_p) {
+						strftime(buf2, sizeof buf2,
+						         time_format, tm_p);
+						n = buf2;
+					} else {
+						n = timestring(file->modtime);
+					}
+				}
+			} else {
+				n = c = timestring(file->modtime);
+				while ((c = strchr(c, ' ')) != NULL)
+					*c = '-';
+			}
 			break;
 		case 'B':
 			c = buf2 + MAXPATHLEN - PERMSTRING_SIZE - 1;
@@ -660,8 +687,27 @@ static void log_formatted(enum logcode code, const char *format, const char *op,
 		case 'm':
 			n = lp_name(module_id);
 			break;
-		case 't':
-			n = timestring(time(NULL));
+		case 't': /* current wall-clock time at moment of logging, format controlled by --log-time-format */
+			if (log_time_format) {
+				time_t now = time(NULL);
+				if (strcmp(log_time_format, "%s") == 0) {
+					/* portable epoch integer, same as for %M */
+					snprintf(buf2, sizeof buf2, "%lld",
+					         (long long)now);
+					n = buf2;
+				} else {
+					struct tm *tm_p = localtime(&now);
+					if (tm_p) {
+						strftime(buf2, sizeof buf2,
+						         log_time_format, tm_p);
+						n = buf2;
+					} else {
+						n = timestring(now);
+					}
+				}
+			} else {
+				n = timestring(time(NULL));
+			}
 			break;
 		case 'P':
 			n = full_module_path;

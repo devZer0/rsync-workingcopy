@@ -543,8 +543,6 @@ has its own detailed description later in this manpage.
 --itemize-changes, -i    output a change-summary for all updates
 --remote-option=OPT, -M  send OPTION to the remote side only
 --out-format=FORMAT      output updates using the specified FORMAT
---time-format=FORMAT     set the timestamp format for %%M in --out-format
---log-time-format=FORMAT set the timestamp format for %%t in --out-format
 --log-file=FILE          log what we're doing to the specified FILE
 --log-file-format=FMT    log updates using the specified FMT
 --password-file=FILE     read daemon-access password from FILE
@@ -3228,10 +3226,6 @@ expand it.
     output the name of the file being transferred prior to its progress
     information (followed, of course, by the out-format output).
 
-    The timestamp format used by the `%M` escape can be customized via
-    [`--time-format`](#opt), and the format used by `%t` via
-    [`--log-time-format`](#opt).
-
 0.  `--log-file=FILE`
 
     This option causes rsync to log what it is doing to a file.  This is
@@ -3265,46 +3259,6 @@ expand it.
 
     See also [the daemon version of the `--log-file-format`
     option](#dopt--log-file-format).
-
-0.  `--time-format=FORMAT`
-
-    Controls the timestamp format used by the `%M` escape in
-    [`--out-format`](#opt) and [`--log-file-format`](#opt).  FORMAT is passed
-    directly to `strftime`(3), so any conversion specifiers supported by your C
-    library are valid — for example:
-
-    >     rsync --out-format="%M %n" --time-format="%s"
-    >     rsync --out-format="%M %n" --time-format="%F %T"
-    >     rsync --out-format="%M %n" --time-format="%Y%m%d%H%M%S"
-
-    The special value `%s` (as the complete FORMAT string, not as part of a
-    longer format) produces a plain Unix epoch integer.  This is handled
-    internally rather than being passed to `strftime`(3), because `%s` is a
-    GNU extension and is not available on all platforms (e.g. BSDs).
-
-    Without this option, `%M` uses rsync's built-in fixed format
-    (e.g. `2026/04/12 14:22:03`).
-
-    This option only affects the `%M` modifier (file modification time).
-    To customize the format of `%t` (current wall-clock time at the moment
-    of logging), use [`--log-time-format`](#opt).
-
-0.  `--log-time-format=FORMAT`
-
-    Controls the timestamp format used by the `%t` escape in
-    [`--out-format`](#opt) and [`--log-file-format`](#opt), which expands to
-    the current wall-clock time at the moment of logging (as opposed to `%M`,
-    which is the file's modification time).  FORMAT is passed directly to
-    `strftime`(3).
-
-    The special value `%s` produces a plain Unix epoch integer, handled
-    internally for portability (see [`--time-format`](#opt)).
-
-    Without this option, `%t` uses rsync's built-in fixed format
-    (e.g. `2026/04/12 14:22:03`).
-
-    To customize the format of `%M` (file modification time), use
-    [`--time-format`](#opt).
 
 0.  `--stats`
 
