@@ -463,7 +463,7 @@ has its own detailed description later in this manpage.
 --crtimes, -N            preserve create times (newness)
 --omit-dir-times, -O     omit directories from --times
 --omit-link-times, -J    omit symlinks from --times
---omit-link-perms        ignore symlink permissions from sender
+--omit-link-perms        ignore symlink permissions on transfer
 --super                  receiver attempts super-user activities
 --fake-super             store/recover privileged attrs using xattrs
 --sparse, -S             turn sequences of nulls into sparse blocks
@@ -1660,10 +1660,9 @@ expand it.
     This tells rsync to omit symlinks when it is preserving modification,
     access, and create times.
 
-0.  `--no-symlink-perms`
+0.  `--omit-link-perms`
 
-    This tells the receiver to ignore the permission bits of symlinks sent by
-    the sender, normalizing them to 0777 instead.
+    This will normalize symlink permissions to 0777
 
     This is useful when transferring from macOS to Linux.  macOS stores and
     transfers symlink permissions (via `lchmod`/`setattrlist`), while Linux
@@ -1671,8 +1670,7 @@ expand it.
     other value.  Without this option, rsync detects a permission mismatch on
     every run and needlessly re-creates every symlink.
 
-    This option only needs to be set on the receiving (Linux) side.  It does
-    not affect permissions on regular files or directories.
+    It does not affect permissions on regular files or directories.
 
 0.  `--super`
 

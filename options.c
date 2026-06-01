@@ -3002,6 +3002,9 @@ void server_options(char **args, int *argc_p)
 	if (mkpath_dest_arg && am_sender)
 		args[ac++] = "--mkpath";
 
+	if (omit_link_perms)
+		args[ac++] = "--omit-link-perms";
+
 	if (ac > MAX_SERVER_ARGS) { /* Not possible... */
 		rprintf(FERROR, "argc overflow in server_options().\n");
 		exit_cleanup(RERR_MALLOC);
