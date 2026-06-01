@@ -463,7 +463,7 @@ has its own detailed description later in this manpage.
 --crtimes, -N            preserve create times (newness)
 --omit-dir-times, -O     omit directories from --times
 --omit-link-times, -J    omit symlinks from --times
---no-symlink-perms       ignore symlink permissions from sender
+--omit-link-perms        ignore symlink permissions from sender
 --super                  receiver attempts super-user activities
 --fake-super             store/recover privileged attrs using xattrs
 --sparse, -S             turn sequences of nulls into sparse blocks
